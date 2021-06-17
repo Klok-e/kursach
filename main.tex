@@ -3,7 +3,7 @@
 \usepackage[T1,T2A]{fontenc}
 \usepackage{fontspec} % Using custom fonts (requires -xelatex flag)
 \usepackage[russian,english,ukrainian]{babel} % Using languages
-\usepackage{geometry} % Set margins
+\usepackage[left=3cm, right=2cm, top=2cm, bottom=2cm]{geometry}
 \usepackage[raggedright]{titlesec} % For section modification
 \usepackage{indentfirst} % Inserts indents in paragraphs
 \usepackage{minted} % For code listing
@@ -11,7 +11,7 @@
 \usepackage{float} % For positioning
 \usepackage[section]{placeins}
 \usepackage{fancyhdr}
-\usepackage{caption}
+\usepackage[tableposition=bottom,singlelinecheck=false]{caption} % captions in figures and tables
 \usepackage{enumitem} % List indents
 \usepackage{chngcntr}
 \usepackage[english,russian,ukrainian]{babel}
@@ -21,673 +21,330 @@
 \definecolor{spot}{rgb}{0,0,0}
 \usepackage[colorlinks,allcolors=spot,bookmarksopen=true,pdfstartview=FitH]{hyperref}
 \usepackage{amsmath}
+\usepackage{etoolbox}% vspace before and after figure
+\usepackage[normalem]{ulem} %for uline
+\usepackage{subcaption} % for multiple dependent pics
+\usepackage{titletoc}
+\usepackage{multirow} % advanced table formatting
+\usepackage[title,titletoc]{appendix} % appendings
+\usepackage{array}
+\usepackage{amsfonts}
 
-\counterwithout{section}{chapter}
+\AtBeginEnvironment{figure}{\vspace{0.5em}}
+\AtEndEnvironment{figure}{\vspace{\baselineskip}}
 
+\AtBeginEnvironment{equation}{\vspace{0.5em}}
+\AtEndEnvironment{equation}{\vspace{\baselineskip}}
+
+% \AtBeginEnvironment{aligned}{\vspace{\baselineskip}}
+% \AtEndEnvironment{aligned}{\vspace{\baselineskip}}
+
+% \AtBeginEnvironment{gather}{\vspace{\baselineskip}}
+% \AtEndEnvironment{gather}{\vspace{\baselineskip}}
+
+\AtBeginEnvironment{table}{\vspace{0.5em}}
+\AtEndEnvironment{table}{\vspace{\baselineskip}}
+
+\newcommand\tline[2]{$\underset{\text{#1}}{\text{\underline{\hspace{#2}}}}$}% line with underset
+
+% PAGE NUMBERING
 \pagestyle{fancy}
-
 \fancyhf{}
-\fancyhead[R]{\thepage}
+\rhead{\thepage}
 \renewcommand{\headrulewidth}{0pt}
-\fancyheadoffset{0mm}
-\fancyfootoffset{0mm}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\setlength{\headheight}{17.0pt}
-
-\fancypagestyle{plain}{
-    \fancyhf{}
-    \rhead{\thepage}}
-
 
 \pagenumbering{gobble}
 
-\usemintedstyle{bw}
+\linespread{1.3} % 1.5 spacing between lines
 
-\geometry{
-  a4paper,
-  left=30mm,
-  right=20mm,
-  top=20mm,
-  bottom=20mm
-}
+\setlength\parindent{5ex} % paragraph indents
 
+\fancypagestyle{plain}{ 
+  \fancyhf{}
+  \rhead{\thepage}}
+
+% CHAPTER FORMATTING
+\titleformat{\chapter}[block] % chapter style
+  {\filcenter}
+  {\thechapter}
+  {1em}
+  {\MakeUppercase}{}
+\titlespacing*{\chapter}{0pt}{-30pt}{*4} 
+
+% SECTION FORMATTING
+\titleformat{\section}
+  {}
+  {\thesection}
+  {1ex}{}
+\titlespacing*{\section}{\parindent}{*4}{*4}
+\titleformat{\subsection}
+  {}
+  {\thesubsection}
+  {1ex}{}
+\titlespacing*{\subsection}{\parindent}{*4}{*4}
+% CREATE COMMAND ALLOWS UNNUMBERED CHAPTER APPEAR IN TABLE OF CONTENTS
+\newcommand\uchapter[1]{%
+  \chapter*{#1}%
+  \addcontentsline{toc}{chapter}{#1}}
+
+% MAKE IT UKRAINIAN
+% \addto{\captionsrussian}{\renewcommand*{\contentsname}{Содержание}}
+
+% NO SPACING BEFORE TOC HEADING
+\dottedcontents{chapter}[1.6em]{}{1.6em}{1pc}
+
+% NORMAL CAPTIONS
 \DeclareCaptionLabelFormat{gostfigure}{Рисунок #2}
 \DeclareCaptionLabelFormat{gosttable}{Таблиця #2}
 \DeclareCaptionLabelSeparator{gost}{~---~}
 \captionsetup{labelsep=gost}
-\captionsetup[figure]{labelformat=gostfigure, justification=centering,
-labelsep=gost}
-\captionsetup[table]{labelformat=gosttable, labelsep=gost}
+\captionsetup*[figure]{labelformat=gostfigure}
+\captionsetup*[table]{labelformat=gosttable}
+\renewcommand{\thesubfigure}{\asbuk{subfigure}}
 
-\setlength\parindent{2.5em}
-\renewcommand{\baselinestretch}{2.0}
-\linespread{1.3} % Set default line spacing
+% PADDINGS IN TABLES
+\renewcommand{\arraystretch}{1.3}
 
+% CENTERED IMAGE CAPTIONS
+\captionsetup*[figure]{labelformat=gostfigure, justification=centering}
+
+% % PROPER LISTS SETUP
+\makeatletter
+    \AddEnumerateCounter{\asbuk}{\@asbuk}{ю)}
+\makeatother
+\setlist{nolistsep}
+\renewcommand{\labelitemi}{-}
+\renewcommand{\labelenumi}{\alph{enumi})}
+\renewcommand{\labelenumii}{\alpha{enumii})}
+\setenumerate{leftmargin=\parindent}
+
+% EXPLANATIONS IN FOOTER
+\renewcommand*{\thefootnote}{\arabic{footnote})}
+\renewcommand{\footnoterule}{%
+  \kern -3pt
+  \hrule width 40mm height .4pt
+  \kern 2.6pt
+}
+
+% CODE FORMATTING
+\usemintedstyle{bw}
+
+% DISABLE WORD SPLITTING IN HEADINGS
+\titleformat*{\section}{\sloppy\righthyphenmin62}
+
+% ONE SPACE AFTER DOT
+\frenchspacing
+
+% FONTS
 \setmainfont{Liberation Serif} % Set default font on Linux
 
-\titleformat{\section}
-{\normalfont}{\thesection}{1em}{}
+% WIDELINE
+\newcommand{\wideunderline}[2][2em]{%
+  \underline{\makebox[\ifdim\width>#1\width\else#1\fi]{#2}}%
+}
 
-\titleformat{\subsection}
-{\normalfont}{\thesubsection}{1em}{}
-
-\titleformat{\subsubsection}
-{\normalfont}{\thesubsubsection}{1em}{}
-
-\titleformat{\chapter}[block]
-    {\filcenter\bfseries}
-    {\thechapter}
-    {1em}
-    {\MakeUppercase}{}
-
-\renewcommand{\headrulewidth}{0pt}
-
-\titlespacing{\chapter}{0pt}{-30pt}{2em}
-\titlespacing\section{0cm}{2em}{1ex}
-\titlespacing\subsection{0cm}{1ex}{1ex}
-
-\newcommand\chap[1]{%
-  \chapter*{#1}%
-  \addcontentsline{toc}{chapter}{\uppercase{#1}}}
+\setlength{\headheight}{17.0pt}
 
 \graphicspath{{./pics}}
 
-\setlist[enumerate]{leftmargin=4em}
+\input{config.tex}
 
 \begin{document}
 \begin{titlepage}
-	\centering
-    Міністерство освіти і науки України
+    \setlength\parindent{0pt}
+    \centering
+
+    \University
+
+    \vspace{1.5ex}
+
+    Кафедра \Department
     
-    Харківський національний університет радіоелектроніки
-    \vspace{1cm}
+    \vspace{10ex}
 
-    Факультет комп'ютерних наук
-    \vspace{1cm}
+    \uppercase{\textbf{міждисциплінарний \\ курсовий проект}}
 
-    Кафедра штучного інтелекту
+    \vspace{4ex}
 
-    \vspace{2cm}
-    \uppercase{Реферат}
-    \vspace{1cm}
+    на тему: <<\Topic>>
 
-    на тему <<Бот Dvango>>
-    \vspace{1cm}
-
-    з дисципліни <<Системи інтелектуальної обробки природно-мовної інформації>>
-
-    \begin{flushleft}
     \vspace{4cm}
-    \begin{minipage}[t]{8cm}
-        Виконали ст. гр. ІТШІ-18-1:
-
-        Соколенко Дмитро Олександрович
-
-        Апраксін Антон Романович
-    \end{minipage}
     \hfill
-    \begin{minipage}[t]{6cm}
-        Прийняв:\\
-        проф. каф. ШІ Рябова Н. В.\\
-        з оцінкою ``\rule{2cm}{0.15mm}''\\
-        ``\rule{0.7cm}{0.15mm}''\rule{2cm}{0.15mm}20\rule{0.7cm}{0.15mm}р
+    \begin{minipage}{9cm}
+        \begin{flushleft}
+            
+            Студента \uline{\hfill\Grade\hfill}
+            курсу групи \uline{\hfill\Group\hfill} \\
+            спеціальності \uline{\hfill\Speciality\hfill} \\
+            \uline{\hfill\StundentName\hfill} \\
+            \vspace{1ex}
+            Керівник \uline{\hfill\ScientificDirectorPosition\hfill} \\
+            \uline{\hfill\ScientificDirectorName\hfill} \\
+            \vspace{3ex}
+            Національна шкала: \uline{\hfill} \\ 
+            \vspace{1ex}
+            Кількість балів: \uline{\hfill} Оцінка ECTS \uline{\hfill}
+        \end{flushleft}
     \end{minipage}
-    \end{flushleft}
-	\vfill
 
+    \vspace{9ex}
+    \hfill
+    \begin{minipage}{13cm}
+        \begin{flushright}
+            Члени коміссії \hspace{.7cm}
+            $\underset{\text{(підпис)}}{\underline{\hspace{3cm}}}$ \hspace{.5em}
+            \wideunderline[10em]{\MemberCommisionF} \\
+            $\underset{\text{(підпис)}}{\underline{\hspace{3cm}}}$ \hspace{.5em}
+            \wideunderline[10em]{\MemberCommisionS} \\
+            $\underset{\text{(підпис)}}{\underline{\hspace{3cm}}}$ \hspace{.5em}
+            \wideunderline[10em]{\MemberCommisionT} \\
+        \end{flushright}
+    \end{minipage}
+    
+    \vfill
 	{Харків \the\year{}}
 \end{titlepage}
+
+\thispagestyle{empty}
+{
+    \setlength\parindent{0pt}
+    \linespread{2}
+
+    \uline{\hfill\University\hfill}
+    \vspace{1ex}
+
+    Інститут, \uline{факультет}, відділення \hspace{1em} \uline{\hfill\Speciality\hfill} 
+    \vspace{.5ex}
+
+    \uline{Кафедра}, циклова комісія \hspace{1em} \uline{\hfill\Department\hfill}
+    \vspace{.5ex}
+    
+    Освітньо кваліфікаційний рівень \hspace{1em} \uline{\hfill\Graduate\hfill}
+    \vspace{.5ex}
+
+    Спеціальність \hspace{1em} \uline{\hfill\SpecialityCode <<\Speciality>>\hfill}
+    
+    \vspace{5ex}
+    \hfill
+    \begin{minipage}{11cm}
+        \begin{flushright}
+            \uppercase{\textbf{Затверджую}} \\
+            \textbf{Завідувач кафедри} \uline{\hfill} \\
+            \hspace{2cm}\uline{\hfill} \\
+            \hspace{2cm}``\underline{\hspace{1cm}''}\uline{\hfill} \hspace{.5cm} {\the\year{}}
+
+        \end{flushright}
+    \end{minipage}
+    
+    \vfill
+    {
+        \centering
+        \uppercase{\textbf{\large{завдання}}}
+        
+        \uppercase{\textbf{на міждисциплінарний курсовий проект}}
+
+        \uline{\hfill$\underset{\text{(прізвище, ім'я, по батькові)}}{\text{\StundentFullName}}$\hfill}}
+        \vspace{0.5em}
+        % $\underset{\text{(прізвище, ім'я, по батькові)}}{\uline{\hfill\text{\StundentFullName}}}$
+
+        1. Тема проекту \uline{\hfill\Topic\hfill}
+
+        Керівник проекту \uline{\hfill\ScientificDirectorNameFull, \ScientificDirectorPositionSmall\hfill}
+
+        2. Строк подання студентом проекту \uline{\hfill10.06.2021\hfill}
+        
+        3. Вихідні дані до проекту \uline{\hfill}
+
+        \uline{\hfill}
+
+        \uline{\hfill}
+
+        \uline{\hfill}
+
+        4. Зміст розрахунково-пояснювальної записки (перелік питань, які підлягають розробці)
+        \uline{\hfill}
+
+        \uline{\hfill}
+
+        \uline{\hfill}
+        
+        \uline{\hfill}
+
+        5. Дата видачі завдання \uline{\hfill 22.04.2021 \hfill}
+}
+
+\newpage
 \pagenumbering{arabic}
 \setcounter{page}{3}
+\thispagestyle{empty}
+{
+    \setlength\parindent{0pt}
 
-\chap{Реферат}
+    \begin{center}
+        \uppercase{Клендарний план}
+    \end{center}
 
-\chap{Скорочення}
+    \begin{tabular}{ | m{0.8cm} | m{9.5cm}| m{3cm} | m{2.5cm} | } 
+        \hline
+        № & Назва етапів проектів & Термін виконання етапів проекту & Примітка \\
+        \hline
+        1 &  &  & Виконано\\
+        \hline
+        2 &  &  & Виконано\\
+        \hline
+        3 &  &  & Виконано\\
+        \hline
+        4 &  &  & Виконано\\
+        \hline
+        5 &  &  & Виконано\\
+        \hline
+        6 &  &  & Виконано\\
+        \hline
+        7 & Підготовка презентації проекту &  & Виконано\\
+        \hline
+        8 & Захист МКП & 18.06 & Виконано\\
+        \hline
+    \end{tabular}
+
+    \vspace{8ex}
+
+    \hfill
+    \begin{minipage}{12cm}
+        \begin{flushright}
+            \textbf{Студент}
+            \tline{Підпис}{1.5cm} \hspace{.5em}
+            \wideunderline[10em]{\StundentName} \\
+            \textbf{Керівник проекту}
+            \tline{Підпис}{1.5cm} \hspace{.5em}
+            \wideunderline[10em]{\ScientificDirectorName} \\
+        \end{flushright}
+    \end{minipage}
+}
+
+\newpage
+\chapter*{Реферат}
+
+\newpage
+\tableofcontents
+
+\newpage
+\chapter*{Перелік умовних позначень, символів, одиниць, скорочень та термінів}
 ГНМ -- Глибокі нейронні мережі
 
 РНМ -- Рекурентні нейронні мережі
 
 ЗНМ -- Згорткові нейронні мережі
 
+
+
 \newpage
-\tableofcontents
+\uchapter{Вступ}
+
 \newpage
+\input{sections/analysis.tex}
 
-
-\chap{Вступ}
-
-
-\chap{Основна частина}
-\section{Аналіз предметної галузі}
-% https://papers.nips.cc/paper/2014/file/a14ac55a4f27472c5d894ec1c3c743d2-Paper.pdf
-Глибокі нейронні мережі (ГНМ) -- надзвичайно потужні моделі машинного навчання,
-які досягають чудової точності у таких складних задачах, як
-розпізнавання мови та візуальне розпізнавання об’єктів.
-ГНМ є потужними, оскільки вони можуть виконувати
-довільні паралельні обчислення за невелику кількість кроків.
-Отже, хоча нейронні мережі пов’язані
-зі звичайними статистичними моделями, вони вивчають складні
-обчислення. Більше того, великі ГНМ можна навчати зі
-зворотним розповсюдженням, коли мічений навчальний набір має
-достатньо інформації для визначення параметрів мережі. Таким
-чином, якщо існує параметр великого ГНМ, який досягає хороших
-результатів (наприклад, оскільки люди можуть вирішити завдання
-дуже швидко), зворотне розповсюдження знайде ці
-параметри і вирішить проблему.
-
-\subsection{Штучні нейронні мережі}
-Штучна нейронна мережа побудована навколо біологічної метафори.
-Будова первинної зорової кори відносно добре відома,
-і вчені виграли Нобелівську премію з фізіології за відкриття в
-1962 р. організації нейронів у перших кортикальних
-шарах \cite{cortex-stuff}. Таким чином, в надзвичайно
-спрощеному вигляді
-мозку нейрони організовані шарами, кожен нейрон отримує
-інформацію з попереднього шару, виконує дуже просте
-обчислення і передає свій результат нейронам наступного
-шару. Однак слід пам’ятати, що це лише метафора та джерело
-натхнення: біологічні мережі мають набагато складніші
-зв’язки, а математичні рівняння, що керують ними, також
-є більш складними \cite{cortex-equations}.
-
-\subsubsection{Перцептрон}
-Перцептрони -- винайдені Френком Розенблаттом у 1957 році
-\cite{rozenblatt}, є найпростішою
-нейронною мережею, яка складається з $n$ кількості входів, лише одного
-нейрона та одного виходу, де $n$ - кількість рис нашого набору
-даних. Процес вираховухання результату класифікації починається
-з обчислення зваженої суми
-по формулі \ref{eq:perceptron1}.
-
-\begin{equation}
-    z = \sum^n_{i=1} x_i w_i + b
-    \label{eq:perceptron1}
-\end{equation}
-
-де $w$ -- вектор дійсних ваг, $b$ -- зміщення.
-Коефіцієнт зміщення зміщує межу прийняття рішення
-від початку координат і не залежить від будь-якого
-вхідного значення.
-
-Потім на зваженій сумі використовується функція активації.
-
-\begin{equation}
-    \phi(z) = \begin{cases}
-        0 ,& z \le w_0 \\
-        1 ,& z > w_0 \\
-    \end{cases}
-    \label{eq:perceptron2}
-\end{equation}
-
-\subsubsection{Багатошаровий персептрон}
-Перші персептрони містили лише один шар. Такі одношарові
-архітектури занадто прості, щоб вони могли виконувати складні задачі,
-і завдяки додаванню декількох шарів ми можемо розрахувати більш складні
-функції. Таким чином, глибокі нейронні мережі використовують дуже
-велику кількість шарів. За останні роки ці архітектури дозволили
-отримати дуже вражаючі результати для розпізнавання зображень та
-відео, а також для автоматичного перекладу текстів.
-
-Багатошаровий персептрон добавляє концепцію
-``прихованого шару''. Тут нейрони розташовані у наборі шарів,
-і кожен шар містить деяку кількість однакових нейронів.
-Кожен нейрон в одному шарі з'єднаний з кожним нейроном в наступному шарі;
-ми говоримо, що мережа тісно пов’язана. Перший рівень - це вхідний шар,
-і його нейрони приймають значення вхідних рис. 
-Останній рівень є вихідним шаром, і він має один нейрон для
-кожного значення, яке виводить мережа (тобто один нейрон
-в разі регресії або двійкової
-класифікації, або $K$  у випадку класифікації з $K$ класами).
-Усі шари між ними відомі як приховані шари, тому що ми не знаємо
-заздалегідь, що ці одиниці повинні обчислювати, і це потрібно
-виявити під час навчання \cite{nn:multilayer-perceptrons}.
-
-Обчислення, які робить багатошарова мережа з двома
-прихованими шарами можна
-представити у векторизованій формі так \cite{nn:multilayer-perceptrons}:
-
-\begin{gather}
-\begin{aligned}
-    h^{(1)} &= \phi^{(1)}(W^{(1)}x + b^{(1)}) \\
-    h^{(2)} &= \phi^{(1)}(W^{(1)}h^{(1)} + b^{(2)}) \\
-    y &= \phi^{(1)}(W^{(1)}h^{(2)} + b^{(3)}) 
-\end{aligned}
-\end{gather}
-
-Векторизована форма зазвичай використовується так як підсумовування
-та індекси можуть бути громіздкими. Оскільки кожен шар містить
-багато нейронів, ми представляємо активації всіх його нейронів
-за допомогою вектора активації $h^{(l)}$. Оскільки для кожної пари
-нейронів у двох послідовних шарах існує вага, можна представити
-ваги кожного шару за допомогою вагової матриці $W^{(l)}$. Кожен шар також має вектор зміщення $b^{(l)}$.
-
-\subsubsection{Навчання мереж}
-Навчання нейронної мережі полягає у виборі ``найкращих'' можливих
-ваг набору нейронів, що складають мережу. Таким чином,
-необхідно вибрати значення цих ваг, щоб найкраще вирішити
-завдання, що вивчаються за набором навчальних даних.
-
-Процедура навчання, таким чином, полягає у модифікації ваг $w$,
-таких, що для кожного $x$, мережа $f_w$ передбачає якомога
-точніше їх асоціювання, тобто в кінці тренування $y \approx f_w(x)$.
-Простий вибір -- мінімізувати суму $E(w)$ квадратів
-помилок, які математично записують як
-
-\begin{equation}
-    \min_w E(w) = \sum (f_w(x) - y)^2
-\end{equation}
-
-Це відповідає задачі оптимізації, оскільки необхідно знайти
-набір параметрів, який оптимізує певну ціль.
-Це складна проблема, оскільки параметрів дуже багато, і ці
-параметри, особливо параметри прихованих шарів, мають складний
-вплив на результат. На щастя, існують ефективні математичні та
-алгоритмічні методи для ефективного вирішення цього типу задач
-оптимізації. Вони ще не повністю зрозумілі на теоретичному
-рівні, і це дуже активна область досліджень. Ці методи
-оптимізації модифікують ваги мережі, щоб покращити її та
-зменшити помилку навчання $E(w)$. Математичне
-правило для прийняття рішення щодо стратегії оновлення
-ваги називається зворотним розповсюдженням \cite{nn:backpropagation}.
-
-У методі зворотного розповсюдження помилки
-використовується правило складної похідної.
-Часткові похідні функції помилки відносно різних ваг та зміщень
-зворотньо поширюються через багатошаровий персептрон.
-Цей акт диференціації дає нам градієнт, або ландшафт помилок,
-який дозволяє приблизитися до мінімуму помилки. Це робиться
-за допомогою алгоритмів оптимізації на основі градієнта, таких
-як стохастичний градієнтний спуск, Adam, Monentum та інші
-\cite{gradient-descend}.
-
-% Всі інші моделі нейронних мереж будуються тих самих принципах,
-% на яких працюють
-% багатошарові перцептрони.
-
-\subsection{Рекурентні нейронні мережі}
-% Для того щоб 
-
-На відміну від звичайних перцептронів, рекурентні нейронні
-мережі (РНМ)
-беруть на вхід не лише значення поточного вхідного вектору,
-але й те, що вони сприйняли раніше в часі.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{recurrent-nn.png}
-    \caption{Ілюстрація структури рекурентної нейронної мережі}
-    \label{fig:rnn}
-\end{figure}
-
-Рішення рекурентної мережі, досягнуте на етапі часу $t-1$, впливає
-на рішення, яке вона прийме через один шаг на етапі часу $t$.
-Отже, рекурентні мережі мають два джерела вхідних даних -- поточні
-та недавнє минуле, які разом визначають, як мережа
-реагує на нові дані.
-
-Можна сказати, що рекурентні зв'язки в нейронній мережі
-дають можливість пам'ятати попередні рішення.
-Додавання пам’яті до нейронних мереж має ціль: у самій послідовності
-є інформація, і рекуррентні мережі використовують її для виконання
-завдань, які мережі прямого зв'язку не можуть.
-А саме, прихований стан дозволяє шукати
-кореляційні залежності між подіями, розділеними багатьма моментами,
-і ці кореляції називаються ``довгостроковими залежностями'',
-оскільки подія за течією часу залежить і є функцією однієї
-або кількох подій, що відбулися раніше.
-
-Звичайна рекурентна одиниця описується формулами:
-
-\begin{gather}
-\begin{aligned}
-    h_t &= \phi(W_h h_{t-1}+W_x x_t+b)\\
-    y_t &= h_t
-\end{aligned}
-\end{gather}
-
-Тут $x_t$ це вхід, $h_t$ -- рекурентна інформація, а $y_t$ -- 
-результат на кроці $t$.
-
-Однак рекурентні мережі, що складаються зі стандартних рекурентних
-одиниць, не здатні обробляти довгострокові залежності: у міру
-зростання розриву між відповідними входами важко
-вивчити з'єднану інформацію. Основними причинами проблеми
-довгострокових залежностей є те, що сигнали про помилки,
-що надходять назад у часі, мають тенденцію або підірватися,
-або зникнути \cite{nn:recurrent-hard}.
-
-Для вирішення цієї проблеми було розроблено багато
-методів, таких як LSTM \cite{nn:lstm}, GRU \cite{nn:gru}. Вони
-гарно себе показали у задачах, які потребують захоплення
-довгострокових залежностей. Такі задачі включають, але не обмежуються,
-розпізнавання мови, машинний переклад.
-
-Задачі, де завдання полягає у відображенні однієї послідовності в
-іншу (машинний переклад, розпізнавання мови) становлять
-виклик для рекурентних
-нейронних мереж, оскільки вони вимагають, щоб розмірність
-входів і виходів була відомою та фіксованою.
-Для вирішення цієї проблеми була запропонована
-модель ``seq2seq'' \cite{nn:seq2seq}. Загалом, вона спрямована
-на перетворення вхідної послідовності (джерела) на нову (цільову),
-і обидві послідовності можуть мати довільну довжину.
-Приклади завдань трансформації включають машинний переклад
-між кількома мовами як у тексті, так і в аудіо,
-генерацію діалогу запитання-відповідь або навіть синтаксичний
-розбір речень на дерева граматики.
-
-Модель seq2seq зазвичай має архітектуру енкодер-декодер, що складається з:
-
-\begin{enumerate}[label=--]
-    \item Енкодер обробляє вхідну послідовність і стискає інформацію
-    у контекстний вектор (також відомий як ембедінг речення
-    або вектор ``думки'') фіксованої довжини. Очікується,
-    що це відображення буде гарним підсумком значення
-    цілої послідовності.
-    \item Декодер ініціалізується контекстним вектором для
-    виводу перетвореної послідовності. Ранні роботи
-    використовували лише останній стан мережі
-    енкодера як початковий стан декодера.
-\end{enumerate}
-
-І енкодер, і декодер є рекурентними нейронними мережами.
-
-Критичним і очевидним недоліком цього дизайну контексту з
-фіксованою довжиною є нездатність запам'ятовувати довгі речення.
-Часто він забуває першу частину, як тільки завершує обробку всього
-вводу. Для вирішення цієї проблеми народився
-механізм уваги \cite{nn:attention}.
-
-\subsection{Механізм уваги}
-Увага до певної міри мотивована тим, як ми приділяємо зорову увагу
-різним регіонам зображення або співвідносимо слова в одному реченні.
-
-Зорова увага людини дозволяє зосередитись на певному регіоні з
-``високою роздільною здатністю'', одночасно сприймаючи навколишнє
-зображення в ``низькій роздільній здатності'', а потім відрегувати
-фокусну точку або зробити відповідний висновок.
-Враховуючи невеликий фрагмент зображення, пікселі в решті надають підказки, що
-там відображається. Ми очікуємо побачити загострене вухо в жовтій коробці,
-тому що ми бачили ніс собаки, ще одне загострене вухо праворуч і очі
-Шіби (речі в червоних квадратах) (Рис. \ref{fig:shiba}). Однак
-светр та ковдра внизу були
-б не такими корисними, як ті собачі риси.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{shiba-example-attention.png}
-    \caption{Шіба-іну в одязі}
-    \label{fig:shiba}
-\end{figure}
-
-Подібним чином ми можемо пояснити зв'язок між словами в одному реченні
-або близькому контексті. Коли ми бачимо ``їсти'', ми сподіваємось дуже
-скоро зустріти слово, що означає вид їжи.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{sentence-example-attention.png}
-    \caption{Одне слово ``поділяє увагу'' іншим словам по-різному}
-    \label{fig:attend-example}
-\end{figure}
-
-Увагу при глибокому навчанні можна широко трактувати як вектор вагових
-коефіцієнтів: для того, щоб передбачити або зробити висновок про один елемент,
-наприклад, піксель на зображенні або слово в реченні, ми оцінюємо,
-використовуючи вектор уваги, наскільки сильно він співвідноситься з іншими
-елементами,
-і приймає суму їх значень, зважену вектором уваги, як наближення
-цілі \cite{attention}.
-
-Механізм уваги народився, щоб допомогти запам’ятати довгі початкові
-речення в машинному нейронному перекладі (МНП). Замість того,
-щоб будувати єдиний вектор контексту із останнього прихованого стану
-енкодера, підхід, винайдений увагою, полягає у створенні
-скорочених шляхів між контекстним вектором та
-всією вихідною послідовністю. Ваги цих з'єднань скорочення
-можна підправити для кожного вихідного елемента.
-
-Хоча вектор контексту має доступ до всієї початкової послідовності,
-нам не потрібно турбуватися про забування.
-Відповідність між джерелом та ціллю вивчається та контролюється
-за допомогою контекстного вектора. По суті, вектор контексту
-споживає три частини інформації:
-
-\begin{enumerate}[label=--]
-    \item прихований стан енкодеру;
-    \item прихований стан декодеру;
-    \item відповідність між входом та ціллю.
-\end{enumerate}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{encoder-decoder-attention.png}
-    \caption{Архітектура рекурентної моделі з адитивною увагою}
-    \label{fig:plot3}
-\end{figure}
-
-Механізм можна формально визначити так. Нехай є початкова послідовність
-$x$ довжини $n$, і треба вивести цільову послідовність $y$
-довжини $m$:
-
-\begin{gather}
-\begin{aligned}
-    x &= [x_1,x_2, ..., x_n] \\
-    y &= [y_1,y_2, ..., y_n]
-\end{aligned}
-\end{gather}
-
-Тут енкодер -- це двонаправлена РНМ (або будь-яка інша РНМ) із прямим
-прихованим станом $\overrightarrow{h_i}$ та зворотнім
-$\overleftarrow{h_i}$. Звичайна конкатенація двох представляє стан
-енкодера. Мотивація цієї операції
-полягає в тому, щоб включити як попередні, так і наступні
-слова до анотації одного слова.
-
-\begin{equation}
-    h_i = [\overrightarrow{h_i}^T;\overleftarrow{h_i}^T], i=1, ..., n
-\end{equation}
-
-Мережа декодера має прихований стан $s_t = f(s_{t-1},t_{t-1},c_t)$
-для слова, що виводиться, на позиції $t$, $t = 1, ..., m$,
-де контекстний вектор $c_t$ є сумою зважених прихованих станів
-вхідної послідовності:
-
-\begin{gather}
-\begin{aligned}
-    c_t          &= \sum^n_{i=1}\alpha_{t,i} h_i \\
-    \alpha_{t,i} &= \text{align}(y_t,x_t) \\
-    &= \frac{\exp(\text{score}(s_{t-1}, h_i))}{\sum^n_{i'=1}\exp(\text{score}(s_{t-1},h_{i'}))}
-\end{aligned}
-\end{gather}
-
-Модель відповідності призначає оцінку $\alpha_{t,i}$
-парі вхідних даних у позиції $i$ та виході у позиції $t$, ($y_t$, $x_i$),
-залежно від того, наскільки вони співвідносяться. Множина
-${α_{t,i}}$ -- це ваги, що визначають, наскільки кожен прихований стан
-входу слід враховувати для кожного виводу.
-У статті Багданау \cite{nn:attention} оцінка відповідності
-$α$ параметризується мережею прямого пересилання
-з єдиним прихованим шаром, і ця мережа навчається спільно з
-іншими частинами моделі. Таким чином, функція оцінки
-має такий вигляд, враховуючи, що $\tanh$ використовується як
-нелінійна функція активації:
-
-\begin{equation}
-    \text{score}(s_t, h_i) = v^T_a \tanh(W_a [s_t;h_i])
-\end{equation}
-Де обидва $v_a$ та $W_a$ є матрицями вагів, які вивчаються
-моделлю відповідності.
-
-Існує декілька варіацій механізму
-уваги \cite{attention:1} \cite{attention:2}, які змінюють
-функцію вираховування відповідності. Вище
-була використана аддитивна \cite{nn:attention} увага.
-
-\subsection{Трансформери}
-Робота ``Attention Is All You Need'' \cite{attention-all-need}
-ввела архітектуру
-``Трансформера'', яка була використана для задачі машинного
-перекладу. Модель уникає необхідності використовувати
-рекурентні з'єднання, та цілком полагається на
-механізм уваги.
-
-Основним компонентом трансформера є блок
-багатоголовочної уваги. Трансформер розглядає закодоване
-представлення входу як набір пар ключ-значення $(K, V)$,
-обидва розмірності $n$ (довжина вхідної послідовності).
-У декодері попередній вивід стискається у запит 
-($Q$ розмірності $m$), а наступний вивід створюється
-шляхом відображення цього запиту та набору ключів і значень.
-
-Трансформер використовує масштабовану увагу
-скалярного добутку: вихід є зваженою сумою значень,
-де вага, що присвоєна кожному значенню, визначається
-скалярним добутком запиту з усіма ключами:
-
-\begin{equation}
-    \text{Attention(Q,K,V)} = \text{softmax}(\frac{QK^T}{\sqrt{n}})V
-\end{equation}
-
-Де
-\begin{equation}
-    Q=XW_Q, K=XW_K, V=XW_V
-\end{equation}
-
-Тут $XW_Q, XW_K, XW_V$ це матриці ваг, які вивчаються
-моделлю. $n$ це розмір матриці, який потрібен
-для зменшення проблени зникаючих градієнтів \cite{attention-all-need}.
-
-Важлимим компонентом трансформера є те, що
-механізм самоуваги використовується декілька разів.
-Замість того, щоб обчислити увагу лише один раз,
-багатоголочна увага проходить через масштабовану увагу
-скалярного добутку кілька разів паралельно. Виходи головок
-уваги просто конкатенуються та лінійно перетворюються
-до очікуваних розмірів. Це дозволяє різним голівкам
-навчатися приділяти увагу різним речам.
-
-\begin{gather}
-\begin{aligned}
-    \text{MultiHead}(Q,K,V)= [\text{head}_1; ...; \text{head}_h]W^O \\
-    \text{head}_i = \text{Attention}(QW^Q_i, KW^K_i, VW^V_i)
-\end{aligned}
-\end{gather}
-
-Де $QW^Q_i$, $KW^K_i$, $VW^V_i$ та $W^O$ -- матриці вагів,
-які модель вивчає під час тренування.
-Множення конкатенованого вектору на матрицю $W^O$
-дозволяє накладати шари багатоголовочної уваги друг на друга,
-тим самим збільшуючи силу представлення моделі, та дозволяючи
-їй вивчати більш складні асоціації між словами.
-Ілюстрацію багатоголовочного механізму уваги можна
-побачити на рисунку \ref{fig:trans-multihead}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.35\textwidth]{multi-head-attention.png}
-    \caption{Ілюстрація багатоголовочного механізму уваги}
-    \label{fig:trans-multihead}
-\end{figure}
-
-Архітектура трансформера зі статті ``Attention Is All You Need''
-використовувалась для задачі машинного перекладу, де
-стандартна архітектура складається з енкодера, та декодера.
-Енкодер створює представлення вхідного
-потенційно-безкінечного контексту
-на основі механізму уваги, а декодер витягує закодовану інформацію,
-та виконує поточне завдання. Повна архітектура трансформера
-є на рисунку \ref{fig:trans-arch}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{transformer.png}
-    \caption{Повна архітектура моделі трансформера}
-    \label{fig:trans-arch}
-\end{figure}
-
-Таким чином, архітектури, засновані на трансформерах
-уникають використання рекурентності у нейронних мережах і замість
-цього цілком довіряють механізмам самоуваги для
-вирішення задач, які традиційно найкраще вирішували
-різні варіації рекурентних мереж.
-
-\subsection{Постановка задачі}
-Архітектура трансформер стала фактичним стандартом
-для завдань з обробки природної мови, проте її застосування
-до комп'ютерного зору залишається обмеженим. У комп'ютерному
-зорі увага або застосовується разом із згортковими мережами (ЗНМ),
-або використовується для заміни певних компонентів
-згорткових мереж, зберігаючи загальну їх структуру на місці.
-
-Задача цієї роботи полягає у застосуванні архітектури
-трансформеру до задачі класифікації зображень. Ми хочемо показати,
-що залежність від згорткових мереж не є необхідною, і чистий
-трансформер, що застосовується безпосередньо до послідовностей
-клаптиків зображень, може дуже добре виконувати
-завдання класифікації зображень.
-
-\section{Теоретичні дослідження}
-\subsection{Попередня робота}
-Трансформери були запропоновані \cite{attention-all-need}
-для машинного перекладу, і з тих пір стали
-найсучаснішим методом у багатьох задачах обробки природної
-мови. Великі моделі на основі трансформерів
-часто попередньо навчаються на великих корпусах, а потім
-доопрацьовуються для виконання поставленого завдання:
-BERT \cite{bert}, GPT \cite{gpt}.
-
-У попередніх роботах були запропоновані методи, які об'єднують
-рекурентні і згорткові шари в одній моделі, для виконання задач
-багатоміткової класифікації \cite{nn:cnn-rnn}, опису зображень.
-Трансформери завдяки механізму уваги можуть
-замінити рекурентні та згорткові шари. Наївне застосування
-уваги до зображень вимагало б, щоб кожен піксель приділяв
-увагу кожному іншому пікселю. При квадратичній вартості відносно кількості
-пікселів, це не практично щодо реальних розмірів
-вхідних зображень. Таким чином, щоб застосувати
-трансформери в контексті обробки зображень,
-раніше було спробувано кілька наближень. Одним з них
-було застосовування самоуваги лише в локальних
-регіонах для кожного пікселя запиту, а не глобально \cite{image-trans}.
-Такі локальні багатоголовкові блоки із самоувагою
-можуть повністю замінити згортання \cite{local-regions-attention}.
-
-Найбільш пов’язаною з нашою є модель \cite{cordonnier},
-яка розділяє вхідне зображення на регіони розміром
-$2 \times 2$ і зверху застосовує повну увагу. Ця робота
-дуже схоже на нашу, проте наша робота йде далі,
-демонструючи, що масштабна попереднє тренування
-робить звичайні трансформери
-конкурентоспроможними (або навіть кращими) із найсучаснішими ЗНМ.
-Також, \cite{cordonnier} використовує маленький розмір
-регіону $2 \times 2$, що не дозволяє використовувати модель
-на занадто великих зображеннях, коли наша модель успішно обробляє
-зображення середнього розміру.
-
-\subsection{Метод}
-
-При розробці моделі ми максимально точно дотримуємося
-оригінального трансформера \cite{attention-all-need}.
-Перевагою цього навмисно простого підходу
-є те, що масштабовані архітектури трансформерів
-для задач обробки природної мови (та їх ефективні реалізації)
-можуть бути використані майже без модифікацій.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{vision-transformer-arch.png}
-    \caption{Архітектура моделі}
-    \label{fig:model-arch}
-\end{figure}
-
-\subsubsection{Vision Transformer}
-Огляд моделі наведено у рисунку \ref{fig:model-arch}.
-
-\subsection{Модель}
-% In order to perform classification, we use the standard approach of adding an extra learnable “classification token” to the sequence.
-% https://stackoverflow.com/questions/58123393/how-to-use-transformers-for-text-classification
+\newpage
+\input{sections/theory.tex}
 
 \section{Експериментальні дослідження}
 
@@ -696,7 +353,7 @@ $2 \times 2$ і зверху застосовує повну увагу. Ця р
 \include{references.tex}
 
 \newpage
-\chap{Додаток 1}
+\section*{Додаток 1}
 % \centerline{\uppercase{\bf{Програмна реалізація}}}
 %     \inputminted[breaklines,linenos=true]{python}{../../src/app.py}
 
