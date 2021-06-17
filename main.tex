@@ -668,12 +668,22 @@ $2 \times 2$ і зверху застосовує повну увагу. Ця р
 
 \subsection{Метод}
 
+При розробці моделі ми максимально точно дотримуємося
+оригінального трансформера \cite{attention-all-need}.
+Перевагою цього навмисно простого підходу
+є те, що масштабовані архітектури трансформерів
+для задач обробки природної мови (та їх ефективні реалізації)
+можуть бути використані майже без модифікацій.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{vision-transformer-arch.png}
     \caption{Архітектура моделі}
     \label{fig:model-arch}
 \end{figure}
+
+\subsubsection{Vision Transformer}
+Огляд моделі наведено у рисунку \ref{fig:model-arch}.
 
 \subsection{Модель}
 % In order to perform classification, we use the standard approach of adding an extra learnable “classification token” to the sequence.
