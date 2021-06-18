@@ -27,14 +27,15 @@
 \beamertemplatenavigationsymbolsempty
 \setlength{\parskip}{1em}
 
-\title{Бот Dvango}
-\subtitle{Системи інтелектуальної обробки природо-мовної інформації}
-\author[Апраксін, Соколенко]{
-    Апраксін Антон Романович
-    \and\\
+\title{An Image is Worth 16x16 Words}
+\subtitle{Міждисциплінарний курсовий проект}
+\author[Соколенко]{
     Соколенко Дмитро Олександрович
 }
-\institute[ХНУРЕ]{ІТШІ-18-1}
+\institute[ХНУРЕ]{ІТШІ-18-1 
+    \\ \vspace{0.4cm}
+    Керівник: Вітько О. В.
+}
 \date{Харків 2021}
 
 \begin{document}
@@ -131,26 +132,26 @@
     Програма представляє собою Telegram чат-бота, який відповідає на запитання користувача. Теми запитань мають бути заздалегідь описані в базі даних чат-бота. Як основний компонент роботи інтелекту бота використовується нейронна мережа BERT-large, заздалегідь натренована на датасеті SQuAD. Як допоміжний використовується алгоритм FlashText.
 \end{frame}
 
-\begin{frame}
-    \frametitle{Організація бази даних}
-    \inputminted[breaklines,linenos=true]{yaml}{sample.yaml}
-\end{frame}
+% \begin{frame}
+%     \frametitle{Організація бази даних}
+%     \inputminted[breaklines,linenos=true]{yaml}{sample.yaml}
+% \end{frame}
 
-\begin{frame}
-    \frametitle{Архітектура трансформерів}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.5\textwidth]{transformer.png}
-    \end{figure}
-\end{frame}
+% \begin{frame}
+%     \frametitle{Архітектура трансформерів}
+%     \begin{figure}[H]
+%         \centering
+%         \includegraphics[width=0.5\textwidth]{transformer.png}
+%     \end{figure}
+% \end{frame}
 
-\begin{frame}
-    \frametitle{Шар уваги}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.6\textwidth]{attention_layer.png}
-    \end{figure}
-\end{frame}
+% \begin{frame}
+%     \frametitle{Шар уваги}
+%     \begin{figure}[H]
+%         \centering
+%         \includegraphics[width=0.6\textwidth]{attention_layer.png}
+%     \end{figure}
+% \end{frame}
 
 \begin{frame}
     \frametitle{Перспективи розвитку}
