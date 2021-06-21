@@ -15,7 +15,7 @@
 \usepackage{enumitem} % List indents
 \usepackage{chngcntr}
 \usepackage[english,russian,ukrainian]{babel}
-\usepackage[nottoc]{tocbibind}
+% \usepackage[nottoc]{tocbibind}
 \usepackage{color}
 \usepackage{xpatch}
 \definecolor{spot}{rgb}{0,0,0}
@@ -29,6 +29,7 @@
 \usepackage[title,titletoc]{appendix} % appendings
 \usepackage{array}
 \usepackage{amsfonts}
+\usepackage{mfirstuc}
 
 \AtBeginEnvironment{figure}{\vspace{0.5em}}
 \AtEndEnvironment{figure}{\vspace{\baselineskip}}
@@ -82,10 +83,15 @@
   {\thesubsection}
   {1ex}{}
 \titlespacing*{\subsection}{\parindent}{*4}{*4}
+\titleformat{\subsubsection}
+  {}
+  {\thesubsubsection}
+  {1ex}{}
+\titlespacing*{\subsubsection}{\parindent}{*4}{*4}
 % CREATE COMMAND ALLOWS UNNUMBERED CHAPTER APPEAR IN TABLE OF CONTENTS
 \newcommand\uchapter[1]{%
-  \chapter*{#1}%
-  \addcontentsline{toc}{chapter}{#1}}
+  \addcontentsline{toc}{chapter}{\xmakefirstuc{\lowercase{#1}}}%
+  \chapter*{#1}}
 
 % MAKE IT UKRAINIAN
 % \addto{\captionsrussian}{\renewcommand*{\contentsname}{Содержание}}
@@ -108,6 +114,8 @@
 % CENTERED IMAGE CAPTIONS
 \captionsetup*[figure]{labelformat=gostfigure, justification=centering}
 
+\setcounter{secnumdepth}{4}
+
 % % PROPER LISTS SETUP
 \makeatletter
     \AddEnumerateCounter{\asbuk}{\@asbuk}{ю)}
@@ -125,9 +133,6 @@
   \hrule width 40mm height .4pt
   \kern 2.6pt
 }
-
-% CODE FORMATTING
-\usemintedstyle{bw}
 
 % DISABLE WORD SPLITTING IN HEADINGS
 \titleformat*{\section}{\sloppy\righthyphenmin62}
@@ -321,14 +326,14 @@
 
 \newpage
 \chapter*{Реферат}
-Курсова робота: 37с., 9 рис., 3 табл., 25 джерел, 0 додатків.
+Пояснювальна записка: 37с., 9 рис., 3 табл., 25 джерел, 0 додатків.
 
-Перелік ключових слів: ШТУЧНА НЕЙРОННА МЕРЕЖА, ТРАНСФОРМЕР,
+ШТУЧНА НЕЙРОННА МЕРЕЖА, ТРАНСФОРМЕР,
 УВАГА, БАГАТОГОЛОВКОВА УВАХА, МАШИННЕ НАВЧАННЯ,
 МАШТАБУВАННЯ, КЛАСИФІКАЦІЯ ЗОБРАЖЕНЬ,
 ПОПЕРЕДНЄ ТРЕНУВАННЯ.
 
-Об’єктом дослідження є застосування архітектури
+Об’єкт дослідження -- застосування архітектури
 трансформера до задачі класифікації зображень.
 
 Мета роботи -- набути навичок читання зарубіжної наукової літератури та аналізу наукових статей. Навчитися робити висновки з нової інформації.
