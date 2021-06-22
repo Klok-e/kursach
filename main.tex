@@ -90,8 +90,8 @@
 \titlespacing*{\subsubsection}{\parindent}{*4}{*4}
 % CREATE COMMAND ALLOWS UNNUMBERED CHAPTER APPEAR IN TABLE OF CONTENTS
 \newcommand\uchapter[1]{%
-  \addcontentsline{toc}{chapter}{\xmakefirstuc{\lowercase{#1}}}%
-  \chapter*{#1}}
+  \chapter*{#1}%
+  \addcontentsline{toc}{chapter}{\xmakefirstuc{\lowercase{#1}}}}
 
 % MAKE IT UKRAINIAN
 % \addto{\captionsrussian}{\renewcommand*{\contentsname}{Содержание}}
@@ -326,12 +326,16 @@
 
 \newpage
 \chapter*{Реферат}
-Пояснювальна записка: 37с., 9 рис., 3 табл., 25 джерел, 0 додатків.
+Пояснювальна записка: 38с., 10 рис., 3 табл., 25 джерел, 1 додаток.
+
+\vspace{\baselineskip}
 
 ШТУЧНА НЕЙРОННА МЕРЕЖА, ТРАНСФОРМЕР,
 УВАГА, БАГАТОГОЛОВКОВА УВАХА, МАШИННЕ НАВЧАННЯ,
 МАШТАБУВАННЯ, КЛАСИФІКАЦІЯ ЗОБРАЖЕНЬ,
 ПОПЕРЕДНЄ ТРЕНУВАННЯ.
+
+\vspace{\baselineskip}
 
 Об’єкт дослідження -- застосування архітектури
 трансформера до задачі класифікації зображень.
@@ -458,6 +462,13 @@ Recognition at Scale''
 
 \newpage
 \include{references.tex}
+
+\newpage
+\chapter*{ДОДАТОК А}
+\addcontentsline{toc}{chapter}{Додатки}
+\centerline{Програмна реалізація}
+\vspace{\baselineskip}
+\inputminted[breaklines,linenos=true]{python}{untitled0.py}
 
 % \newpage
 % \section*{Додаток 1}
